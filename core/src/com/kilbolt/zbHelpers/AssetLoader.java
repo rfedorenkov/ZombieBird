@@ -43,7 +43,7 @@ public class AssetLoader {
         birdUp.flip(false, true);
 
         // создаем массив из объектов TextureRegion
-        TextureRegion[] birds = { birdDown, bird, birdUp };
+        TextureRegion[] birds = {birdDown, bird, birdUp};
         // Создаем новый объект типа Animation в котором каждый фрейм длиться 0.06 секунд, используя созданный массив.
         birdAnimation = new Animation<>(0.06f, birds);
         // Выставляем режим проигрывания типа ping pong, анимация будет проигрываться вперед-назад.
@@ -68,13 +68,28 @@ public class AssetLoader {
         // Создайте (или получите ранее созданный) файл preferences
         prefs = Gdx.app.getPreferences("ZombieBird");
 
+        // Создадим переменую для хранения лучшего счета со значением по умолчанию 0
+        if (!prefs.contains("highScore")) {
+            prefs.putInteger("highScore", 0);
+        }
+    }
 
+    // Получает на вход значение для highScore и сохраняет в файл
+    public static void setHighScore(int val) {
+        prefs.putInteger("highScore", val);
+        prefs.flush();
+    }
+
+    // Возвращает текущее значение highScore
+    public static int getHighScore() {
+        return prefs.getInteger("highScore");
     }
 
     public static void dispose() {
         // Мы должны избавляться от текстур, когда заканчивает работать с объектом в котором есть текстуры
         texture.dispose();
-        dead.dispose();;
+        dead.dispose();
+
         flap.dispose();
         coin.dispose();
 
